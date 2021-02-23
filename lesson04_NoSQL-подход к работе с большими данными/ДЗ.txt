@@ -1,0 +1,20 @@
+use products
+
+db.catalog.insertMany([
+{name: "цемент", category: "общестрой", price: 300, volume: 25},
+{name: "песок", category: "общестрой", price: 200, volume: 60},
+{name: "труба", category: "сантехника", price: 50, volume: 10},
+{name: "золотой унитаз", category: "сантехника", price: 300000, volume: 1}
+])
+
+
+db.catalog.aggregate(
+   [
+     { $project: { name: true, category: true, total: { $multiply: [ "$price", "$volume" ] } } }
+   ]
+)
+
+
+db.catalog.update({name : "цемент"}, {$inc: {volume: -1}})
+
+db.catalog.find().sort({price:-1}).limit(2)
